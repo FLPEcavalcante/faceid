@@ -7,16 +7,16 @@ from .models import Users as User
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('/plataforma/home')
+        return redirect('/plataforma/templates/home')
     status = request.GET.get('status')
     return render(request, 'login.html', {'status': status})
 
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect('/plataforma/home')
+        return redirect('/usuarios/templates')
     status = request.GET.get('status')
-    return render(request, 'register.html', {'status': status})
+    return render(request, 'cadastro.html', {'status': status})
 
 
 def validate_register(request):
@@ -30,37 +30,37 @@ def validate_register(request):
     if len(name.strip()) == 0 or len(email.strip()) == 0:
         messages.add_message(request, constants.ERROR,
                              'Email ou password não podem ficar vazior')
-        return redirect('/auth/register/')
+        return redirect('/auth/validate_register/')
 
     if len(password) < 8:
         messages.add_message(request, constants.ERROR,
                              'Sua password deve ter no mínimo 8 caracteres')
-        return redirect('/auth/register/')
+        return redirect('/auth/validate_register/')
 
     if User.objects.filter(email=email).exists():
         messages.add_message(request, constants.ERROR,
                              'Já existe um usuário com esse email')
-        return redirect('/auth/register/')
+        return redirect('/auth/validate_register/')
 
     if User.objects.filter(username=name).exists():
         messages.add_message(request, constants.ERROR,
                              'Já existe um usuário com esse name')
-        return redirect('/auth/register/')
+        return redirect('/auth/validate_register/')
 
     try:
 
         user = User.objects.create_user(
-            username=name, email=email, password=password, rua=rua, numero=numero, cep=cep)
+            username=name, email=email, password=password)
         user.save()
 
         messages.add_message(request, constants.SUCCESS,
-                             'register realizado com sucesso')
-        return redirect('/auth/register/')
+                             'Registro realizado com sucesso')
+        return redirect('/auth/validate_register/')
 
     except:
         messages.add_message(request, constants.ERROR,
                              'Erro interno do sistema')
-        return redirect('/auth/register/')
+        return redirect('/auth/validate_register/')
 
 # teste123456
 
@@ -70,7 +70,6 @@ def validate_login(request):
     password = request.POST.get('password')
 
     user = auth.authenticate(username=name, password=password)
-    print(user)
     if not user:
         messages.add_message(request, constants.WARNING,
                              'Email ou password inválido')
