@@ -19,13 +19,12 @@ def register(request):
     return render(request, 'cadastro.html', {'status': status})
 
 
-def validate_register(request):
+def validate_register(request, User):
     name = request.POST.get('name')
     email = request.POST.get('email')
     password = request.POST.get('password')
-    cep = request.POST.get('cep')
-    rua = request.POST.get('rua')
-    numero = request.POST.get('numero')
+    # import pdb
+    # pdb.set_trace()
 
     if len(name.strip()) == 0 or len(email.strip()) == 0:
         messages.add_message(request, constants.ERROR,
@@ -62,8 +61,6 @@ def validate_register(request):
                              'Erro interno do sistema')
         return redirect('/auth/validate_register/')
 
-# teste123456
-
 
 def validate_login(request):
     name = request.POST.get('name')
@@ -76,7 +73,7 @@ def validate_login(request):
         return redirect('/auth/login/')
     else:
         auth.login(request, user)
-        return redirect('/plataforma/home')
+        return redirect('/plataforma/templates/home')
 
 
 def out(request):
