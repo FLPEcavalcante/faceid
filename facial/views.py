@@ -1,8 +1,8 @@
-from asyncio import mixins
-import statistics
+
 import requests
 
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from . import models
 
@@ -10,7 +10,7 @@ from . import models
 CONTROL_ID_URL = 'http://10.8.4.6/'
 CONTROL_ID_URL_LOGIN = CONTROL_ID_URL + 'login.fcgi'
 CONTROL_ID_URL_DOOR = CONTROL_ID_URL + 'execute_actions.fcgi?session='
-CONTROL_ID_URL_OPEN_DOOR = CONTROL_ID_URL + 'abrir_porta'
+CONTROL_ID_URL_OPEN_DOOR = CONTROL_ID_URL + 'open_door'
 
 
 def authenticate():
@@ -53,7 +53,17 @@ def authenticate():
     print("The door is opened!")
 
 
-def door():
-    if 
-    open_door = requests.post.(CONTROL_ID_URL_OPEN_DOOR +
-                               session_id, json=open_door_data)
+class ListUsers(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+
+    def get(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        authenticate()
+        return Response({})
