@@ -1,12 +1,16 @@
+from asyncio import mixins
+import statistics
 import requests
 
 from django.shortcuts import render
 
 from . import models
 
+
 CONTROL_ID_URL = 'http://10.8.4.6/'
 CONTROL_ID_URL_LOGIN = CONTROL_ID_URL + 'login.fcgi'
 CONTROL_ID_URL_DOOR = CONTROL_ID_URL + 'execute_actions.fcgi?session='
+CONTROL_ID_URL_OPEN_DOOR = CONTROL_ID_URL + 'abrir_porta'
 
 
 def authenticate():
@@ -47,3 +51,9 @@ def authenticate():
         raise ValueError(f'Login attempt error: {open.json(), open.url}')
 
     print("The door is opened!")
+
+
+def door():
+    if 
+    open_door = requests.post.(CONTROL_ID_URL_OPEN_DOOR +
+                               session_id, json=open_door_data)
