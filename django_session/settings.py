@@ -11,9 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+
 import os
-from typing import Container
-from django.contrib.messages import constants
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'usuarios',
-    'plataforma',
+    'facial',
 ]
 
 MIDDLEWARE = [
@@ -113,28 +111,12 @@ LANGUAGE_CODE = 'pt-BR'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
-SESSION_COOKIE_AGE = 60 * 5 * 60
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Django message
-
-MESSAGE_TAGS = {
-    constants.DEBUG: 'alert-primary',
-    constants.ERROR: 'alert-danger',
-    constants.SUCCESS: 'alert-success',
-    constants.INFO: 'alert-info',
-    constants.WARNING: 'alert-warning',
-}
-
-
-AUTH_USER_MODEL = "usuarios.Users"
