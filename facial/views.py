@@ -1,8 +1,10 @@
-
 import requests
 
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from facial.serializers import AuthenticationSerializer
 
 from . import models
 
@@ -31,39 +33,47 @@ def authenticate():
         ]
     }
 
-    print("Trying to login!")
-
     login = requests.post(CONTROL_ID_URL_LOGIN, data=login_data)
 
     if login.ok:
-        print("Login ok!")
         session_id = login.json().get('session')
     else:
         raise ValueError(f'Login attempt error: {login.json()}')
 
-    print("Trying to open door!")
     open = requests.post(CONTROL_ID_URL_DOOR +
                          session_id, json=open_door_data)
 
     if open.ok:
-        print("Open ok!")
+        print('open_door_data: ok')
     else:
         raise ValueError(f'Login attempt error: {open.json(), open.url}')
 
-    print("The door is opened!")
+
+# class ListUsers(APIView):
+#     """
+#     View to list all users in the system.
+
+#     * Requires token authentication.
+#     * Only admin users are able to access this view.
+#     """
+
+#     def get(self, request, format=None):
+#         """
+#         Return a list of all users.
+#         """
+#         authenticate()
+#         return Response({})
 
 
-class ListUsers(APIView):
+@api_view(http_method_names=['GET', 'POST'])
+def door_test(request):
     """
-    View to list all users in the system.
 
-    * Requires token authentication.
-    * Only admin users are able to access this view.
     """
-
-    def get(self, request, format=None):
-        """
-        Return a list of all users.
-        """
-        authenticate()
-        return Response({})
+    authenticate = models.Authentication.objects.filter(is_active=True)
+    serializer = AuthenticationSerializer(
+        instance=authenticate,
+        many=True,
+        context={'request': request},
+    )
+    return Response(serializer.data)
