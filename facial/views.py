@@ -4,6 +4,7 @@ import os
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import response, status, views
+from django.conf import settings
 
 from facial.serializers import DataRequestSerializer
 
@@ -34,18 +35,23 @@ def authenticate():
         ]
     }
 
-    login = requests.post(os.CONTROL_ID_URL_LOGIN, data=login_data)
+    # import pdb
+    # pdb.set_trace()
+    login = requests.post(settings.CONTROL_ID_URL_LOGIN, data=login_data)
 
     if login.ok:
         session_id = login.json().get('session')
     else:
         raise ValueError(f'Login attempt error: {login.json()}')
 
-    open = requests.post(os.CONTROL_ID_URL_DOOR +
-                         session_id, json=open_door_data)
+    import pdb
+    pdb.set_trace()
+    open = requests.post(
+        f'{settings.CONTROL_ID_URL_DOOR}{session_id}',
+        json=open_door_data)
 
     if open.ok:
-        print('open_door_data: ok')
+        print(f'\n{settings.CONTROL_ID_URL_DOOR}{session_id}\n')
     else:
         raise ValueError(f'Login attempt error: {open.json(), open.url}')
 
@@ -53,20 +59,18 @@ def authenticate():
 class OpenDoor(views.APIView):
 
     """
-    
+
 
     Args:
         request (dict): Uses a data response list.
 
-    Returns: 
+    Returns:
         queryset (JSON): return list of data FindFace.
     """
 
-    serializer = DataRequestSerializer
-    queryset = models.Authentication.objects.all()
-
     def post(self, request):
 
+        authenticate()
         serializer = DataRequestSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
