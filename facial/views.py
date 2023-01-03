@@ -1,21 +1,22 @@
 import requests
+import os
 
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework import response, status, views
 
-from facial.serializers import AuthenticationSerializer
+from facial.serializers import DataRequestSerializer
 
 from . import models
 
 
-CONTROL_ID_URL = 'http://10.8.4.6/'
-CONTROL_ID_URL_LOGIN = CONTROL_ID_URL + 'login.fcgi'
-CONTROL_ID_URL_DOOR = CONTROL_ID_URL + 'execute_actions.fcgi?session='
-CONTROL_ID_URL_OPEN_DOOR = CONTROL_ID_URL + 'open_door'
-
-
 def authenticate():
+    """_summary_
+
+    Raises:
+        ValueError: _description_
+        ValueError: _description_
+    """
 
     auth = models.Authentication.objects.filter(is_active=True).first()
 
@@ -28,19 +29,19 @@ def authenticate():
         "actions": [
             {
                 "action": "sec_box",
-                "parameters": "id=65793,reason=3,timeout=10000"
+                "parameters": "id=65793,reason=3,timeout=5000"
             }
         ]
     }
 
-    login = requests.post(CONTROL_ID_URL_LOGIN, data=login_data)
+    login = requests.post(os.CONTROL_ID_URL_LOGIN, data=login_data)
 
     if login.ok:
         session_id = login.json().get('session')
     else:
         raise ValueError(f'Login attempt error: {login.json()}')
 
-    open = requests.post(CONTROL_ID_URL_DOOR +
+    open = requests.post(os.CONTROL_ID_URL_DOOR +
                          session_id, json=open_door_data)
 
     if open.ok:
@@ -49,31 +50,28 @@ def authenticate():
         raise ValueError(f'Login attempt error: {open.json(), open.url}')
 
 
-# class ListUsers(APIView):
-#     """
-#     View to list all users in the system.
-
-#     * Requires token authentication.
-#     * Only admin users are able to access this view.
-#     """
-
-#     def get(self, request, format=None):
-#         """
-#         Return a list of all users.
-#         """
-#         authenticate()
-#         return Response({})
-
-
-@api_view(http_method_names=['GET', 'POST'])
-def door_test(request):
-    """
+class OpenDoor(views.APIView):
 
     """
-    authenticate = models.Authentication.objects.filter(is_active=True)
-    serializer = AuthenticationSerializer(
-        instance=authenticate,
-        many=True,
-        context={'request': request},
-    )
-    return Response(serializer.data)
+    
+
+    Args:
+        request (dict): Uses a data response list.
+
+    Returns: 
+        queryset (JSON): return list of data FindFace.
+    """
+
+    serializer = DataRequestSerializer
+    queryset = models.Authentication.objects.all()
+
+    def post(self, request):
+
+        serializer = DataRequestSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return response.Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )

@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-s&ylln(+#c_3g)oap%l^70uhq&5b-2e%kudth#0h4j=o@ug5x6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -110,6 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-BR'
 
+USE_TZ = True
+
 TIME_ZONE = 'America/Sao_Paulo'
 
 # Static files (CSS, JavaScript, Images)
@@ -121,3 +123,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Faceid model url
+#
+CONTROL_ID_URL = os.getenv('http://10.8.4.6/')
+CONTROL_ID_URL_LOGIN = os.getenv('login.fcgi')
+CONTROL_ID_URL_DOOR = os.getenv('execute_actions.fcgi?session=')
+CONTROL_ID_URL_OPEN_DOOR = os.getenv('open_door')
