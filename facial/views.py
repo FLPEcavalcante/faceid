@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import response, status, views
 from django.conf import settings
 
-from facial.control_id.views import RequestOpenDoor
+from facial.control_id.views import OpenDoorRequest
 from facial.serializers import DataRequestSerializer
 
 from . import models
@@ -67,12 +67,11 @@ class OpenDoor(views.APIView):
 
     def post(self, request):
 
-        RequestOpenDoor()
+        OpenDoorRequest()
         # authenticate()
         serializer = DataRequestSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        print("\n\n\n\n\---8--------------------->>>>>>>>>>>>>>>>>>>---------------")
 
         return response.Response(
             serializer.data,

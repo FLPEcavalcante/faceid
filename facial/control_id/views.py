@@ -3,33 +3,33 @@ import requests
 from facial import models, views
 
 
-class RequestOpenDoor():
+class OpenDoorRequest():
 
-    # def __init__(self):
+    def __init__(self, login_data, open_door_data):
+        self.login_data = login_data
+        self.open_door_data = open_door_data
 
-    #     # self.facial = xx
-    #     # self.login_data = yy
-    #     # self.open_door_data = ss
-    #     print(self.login_data)
-
-    # def xpto(self):
-    #     print(self.authh)
     auth = models.Authentication.objects.filter(is_active=True).first()
-    print("\n\n\n\n\---1--------------------->>>>>>>>>>>>>>>>>>>---------------")
 
-    login_data = {
-        "login": auth.username,
-        "password": auth.password
-    }
+    log = OpenDoorRequest(
+        login_data={
+            "login": auth.username,
+            "password": auth.password
+        }
+    )
+    print(log.login_data)
 
-    open_door_data = {
-        "actions": [
-            {
-                "action": "sec_box",
-                "parameters": "id=65793,reason=3,timeout=5000"
-            }
-        ]
-    }
+    door = OpenDoorRequest(
+        open_door_data={
+            "actions": [
+                {
+                    "action": "sec_box",
+                    "parameters": "id=65793,reason=3,timeout=5000"
+                }
+            ]
+        }
+    )
+    print(door.open_door_data)
 
     def authenticate(self):
         """Method for validated authencication of login the user.
@@ -40,33 +40,21 @@ class RequestOpenDoor():
         Return:
             value (session): return a value for session validated.
         """
-        print("\n\n\n\n\----2-------------------->>>>>>>>>>>>>>>>>>>---------------")
 
         login = requests.post(
-            settings.CONTROL_ID_URL_LOGIN,
-            RequestOpenDoor.login_data
+            settings.CONTROL_ID_URL_LOGIN, self.log
         )
-        print("\n\n\n\n\----3-------------------->>>>>>>>>>>>>>>>>>>---------------")
-        print(login)
 
         if login.ok:
-            import pdb
-            pdb.set_trace()
-            print("\n\n\n\n\---4--------------------->>>>>>>>>>>>>>>>>>>---------------")
-            breakpoint()
             session_id = login.json().get('session')
         else:
-            print("\n\n\n\n\----5-------------------->>>>>>>>>>>>>>>>>>>---------------")
             raise ValueError(f'Login attempt error: {login.json()}')
 
         open = requests.post(
-            f'{settings.CONTROL_ID_URL_DOOR}{session_id}',
-            json=RequestOpenDoor.open_door_data
+            f'{settings.CONTROL_ID_URL_DOOR}{session_id}', self.door
         )
 
         if open.ok:
-            print("\n\n\n\n\--6---------------------->>>>>>>>>>>>>>>>>>>---------------")
             print(f'\n{settings.CONTROL_ID_URL_DOOR}{session_id}\n')
         else:
-            print("\n\n\n\n\---7--------------------->>>>>>>>>>>>>>>>>>>---------------")
             raise ValueError(f'Login attempt error: {open.json(), open.url}')
