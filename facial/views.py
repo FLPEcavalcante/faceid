@@ -1,14 +1,10 @@
-from django.http import JsonResponse
 from rest_framework import response, status, views
-from django.conf import settings
-
-from facial.control_id.views import authenticate
-
-from facial.serializers import DataRequestSerializer
 
 
-class OpenDoor(views.APIView):
+from . import serializers, controlid
 
+
+class OpenDoorView(views.APIView):
     """Method Class for open door action.
 
     Args:
@@ -19,12 +15,26 @@ class OpenDoor(views.APIView):
     """
 
     def post(self, request):
+        """Post data and open door.
 
-        authenticate()
-        serializer = DataRequestSerializer(data=request.data, many=True)
+        Args:
+            request: request.
+
+        Returns:
+            response.Response: rest_framework Response.
+        """
+
+        try:
+            controlid.ControlID.opendoor()
+        except Exception as exc:
+            return response.Response(
+                {"error": exc}, status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = serializers.DataRequestSerializer(
+            data=request.data, many=True
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return response.Response(
             serializer.data,
             status=status.HTTP_201_CREATED
