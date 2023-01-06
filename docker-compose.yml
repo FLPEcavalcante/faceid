@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  db:
+    image: circleci/postgres:12-postgis
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_DB: testdatabase
+      POSTGRES_PASSWORD: testpassword
+
+  dev:
+    build: .
+    command: >
+      bash -c "export
+      && python manage.py makemigrations --no-input
+      && python manage.py migrate --no-input
+      && python manage.py runserver 0.0.0.0:8080"
+    volumes:
+      - .:/app/
+    ports:
+      - "8080:8080"
+    environment:
+      CONTROL_ID_URL_LOGIN: http://10.8.4.6/login.fcgi
+      CONTROL_ID_URL_DOOR: http://10.8.4.6/execute_actions.fcgi?session=
+      CONTROL_ID_USERNAME: admin
+      CONTROL_ID_PASSWORD: Hexgis@2022
+    depends_on:
+      - db
