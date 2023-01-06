@@ -131,9 +131,11 @@ CONTROL_ID_URL_LOGIN = os.getenv(
     'CONTROL_ID_URL_LOGIN', 'http://10.8.4.6/login.fcgi')
 CONTROL_ID_URL_DOOR = os.getenv(
     'CONTROL_ID_URL_DOOR', 'http://10.8.4.6/execute_actions.fcgi?session=')
-# CONTROL_ID_URL_OPEN_DOOR = os.getenv('CONTROL_ID_URL_OPEN_DOOR')
+
+CONTROL_ID_USERNAME = os.getenv('CONTROL_ID_USERNAME', 'admin')
+CONTROL_ID_PASSWORD = os.getenv('CONTROL_ID_URL_PASSWORD', 'Hexgis@2022')
 
 
-# export CONTROL_ID_URL_LOGIN='http://10.8.4.6/login.fcgi'
+# export CONTROL_ID_USERNAME='http://10.8.4.6/login.fcgi'
 # export CONTROL_ID_URL_DOOR='http://10.8.4.6/execute_actions.fcgi?session='
 # export CONTROL_ID_URL_OPEN_DOOR='open_door'

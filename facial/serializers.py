@@ -1,14 +1,6 @@
 from rest_framework import serializers
-from .models import Authentication, DataRequest
 
-
-class AuthenticationSerializer(serializers.ModelSerializer):
-    """A class to serialize Authentication data."""
-    class Meta:
-        """Meta class for AuthenticationSerializer."""
-
-        model = Authentication
-        fields = '__all__'
+from . import models
 
 
 class DataRequestSerializer(serializers.ModelSerializer):
@@ -17,5 +9,5 @@ class DataRequestSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class for DataRequestSerializer."""
 
-        model = DataRequest
+        model = models.DataRequest
         fields = '__all__'

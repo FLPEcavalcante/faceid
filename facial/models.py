@@ -1,42 +1,6 @@
 from django.db import models
 
 
-class Authentication(models.Model):
-    """Model to authentication ControlID.
-
-    Args:
-        models (dict): Adding status to authentication.
-
-    Returns:
-        JSON: Return a response data in JSON.
-    """
-
-    username = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True
-    )
-
-    password = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True
-    )
-
-    is_active = models.BooleanField(
-        default=True
-    )
-
-    class Meta:
-        """Meta class for Authentication model."""
-        verbose_name = 'Auth'
-        verbose_name_plural = 'Authentications'
-
-    def __str__(self):
-        """Authentication model data string representation."""
-        return f'{self.username}'
-
-
 class DataRequest(models.Model):
     """Data response Model in Json.
 
