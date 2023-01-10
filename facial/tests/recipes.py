@@ -28,8 +28,3 @@ class DataRequestRecipes:
             created_date=datetime.datetime.now(),
             facial_creation_date=datetime.datetime.now(),
         )
-
-        # self.url = Recipe(
-        #     views.OpenDoorView,
-        #     url='(facial:open-door/)'
-        # )
