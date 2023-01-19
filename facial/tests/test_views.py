@@ -18,14 +18,6 @@ class TestOpenDoorView(TestCase):
         self.data_request = self.recipes.data_request.make(id=1)
         self.url = reverse('facial:open-door')
 
-    # def test_request_data_lits_view_with_success(self):
-    #     """Method to test drone list route with success status code."""
-
-    #     response = get(self.url)
-
-    #     self.assertTrue(status.is_success(response.status_code))
-    #     self.assertEqual(len(response.data), 1)
-
     def test_request_data_creation_data_with_error(self):
         """Method to test input data with error on view."""
 
@@ -40,20 +32,8 @@ class TestOpenDoorView(TestCase):
             }
         ]
 
-        import pdb
-        pdb.set_trace()
-
         response = self.client.post(self.url)
         self.assertTrue(status.is_client_error(response.status_code))
 
         response = self.client.post(self.url, data=data)
         self.assertTrue(status.is_client_error(response.status_code))
-
-    # def test_request_data_lits_view_with_multiple_data_success(self):
-    #     """Method to test drone list route with success status code."""
-
-    #     data_request = self.recipes.data_request.make()
-    #     self.assertIsInstance(data_request)
-
-    #     response = get(self.url)
-    #     self.assertTrue(status.is_success(response.status_code))
