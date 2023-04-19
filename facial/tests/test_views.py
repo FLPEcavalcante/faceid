@@ -31,7 +31,6 @@ class TestOpenDoorView(TestCase):
                 "facial_creation_date": "2023-01-10T 00:00:00"
             }
         ]
-
         response = self.client.post(self.url)
         self.assertTrue(status.is_client_error(response.status_code))
 

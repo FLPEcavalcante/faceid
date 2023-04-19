@@ -5,7 +5,7 @@ class DataRequest(models.Model):
     """Data response Model in Json.
 
     Args:
-        models (dict): Adding data the response. 
+        models (dict): Adding data the response.
 
     Returns:
         JSON: Return a response data in JSON.

@@ -13,10 +13,11 @@ class TestDataRequest(TestCase):
 
         self.recipes = recipes.DataRequestRecipes()
         self.data_request = self.recipes.data_request.make()
+        import pdb
+        pdb.set_trace()
 
     def test_user_settings_invalid_data_creation(self):
         """Test user settings invalid creation without user."""
-
         with self.assertRaises(Exception):
             self.recipes.user.make(
                 user=None
