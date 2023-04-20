@@ -1,5 +1,10 @@
 from rest_framework import response, status, views
+from rest_framework.generics import DestroyAPIView
+from rest_framework.response import Response
 
+from django.http import Http404
+
+from facial.models import DataRequest
 
 from . import serializers, controlid
 
@@ -39,3 +44,20 @@ class OpenDoorView(views.APIView):
             serializer.data,
             status=status.HTTP_201_CREATED
         )
+
+
+class MyModelDeleteView(DestroyAPIView):
+    """
+    View for deleting objects of the DataRequest model.
+    """
+    
+    queryset = DataRequest.objects.all()
+    serializer_class = serializers.DataRequestSerializer
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+        except Http404:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)

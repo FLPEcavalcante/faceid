@@ -7,7 +7,11 @@ from facial import models, views
 
 
 class DataRequestRecipes:
-    """_summary_
+    """A class to define recipes for creating data request objects.
+    
+    Attributes:
+        user: A recipe for creating User objects.
+        data_request: A recipe for creating DataRequest objects.
     """
 
     def __init__(self):
