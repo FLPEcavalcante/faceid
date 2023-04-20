@@ -46,7 +46,7 @@ class OpenDoorView(views.APIView):
         )
 
 
-class MyModelDeleteView(DestroyAPIView):
+class ModelDelete(DestroyAPIView):
     """
     View for deleting objects of the DataRequest model.
     """
