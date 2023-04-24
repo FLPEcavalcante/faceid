@@ -45,19 +45,29 @@ class OpenDoorView(views.APIView):
             status=status.HTTP_201_CREATED
         )
 
+    def delete_all(self):
+        """Delete all objects from the DataRequest model."""
+        DataRequest.objects.all().delete()
 
-class ModelDelete(DestroyAPIView):
-    """
-    View for deleting objects of the DataRequest model.
-    """
+    def delete(self, request):
+        """Delete all objects from the DataRequest model."""
+        self.delete_all()
+        return response.Response(
+            {"message": "All objects have been deleted."}, status=status.HTTP_204_NO_CONTENT
+        )
     
-    queryset = DataRequest.objects.all()
-    serializer_class = serializers.DataRequestSerializer
+# class ModelDelete(DestroyAPIView):
+#     """
+#     View for deleting objects of the DataRequest model.
+#     """
+    
+#     queryset = DataRequest.objects.all()
+#     serializer_class = serializers.DataRequestSerializer
 
-    def delete(self, request, *args, **kwargs):
-        try:
-            instance = self.get_object()
-            self.perform_destroy(instance)
-        except Http404:
-            pass
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, request, *args, **kwargs):
+#         try:
+#             instance = self.get_object()
+#             self.perform_destroy(instance)
+#         except Http404:
+#             pass
+#         return Response(status=status.HTTP_204_NO_CONTENT)
